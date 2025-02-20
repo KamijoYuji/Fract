@@ -17,6 +17,9 @@ public:
 		if (!b)
 			return;
 
+		bool aflag = a < 0; a = abs(a);
+		bool bflag = b < 0; b = abs(b);
+
 		while (!(abs(floor((a+0.5)) - a) < eps and abs(floor((b + 0.5)) - b) < eps)) {
 			a *= 10; b *= 10;
 		}
@@ -31,13 +34,18 @@ public:
 			c--;
 		}
 
+		if (!(aflag and bflag)) {
+			a = aflag ? -a : a;
+			a = bflag ? -a : a;
+		}
+
 	}
 
 	Fract() { a = 0.0; b = 1.0; value = 0.0; }
-	Fract(double n, double m) { a = n; b = m; if(b)value = a / b; }
-	Fract(int n, double m) { a = double(n); b = m; if (b)value = a / b; }
-	Fract(double n, int m) { a = n; b = double(m); if (b)value = a / b; }
-	Fract(int n, int m) { a = double(n); b = double(m); if (b)value = a / b; }
+	Fract(double n, double m) { a = n; b = m; if (b)value = a / b; reduct(); }
+	Fract(int n, double m) { a = double(n); b = m; if (b)value = a / b; reduct(); }
+	Fract(double n, int m) { a = n; b = double(m); if (b)value = a / b; reduct(); }
+	Fract(int n, int m) { a = double(n); b = double(m); if (b)value = a / b; reduct(); }
 	Fract(double val) { value = val; a = val; b = 1.0; reduct(); }
 	Fract(int val) { value = double(val); a = double(val); b = 1.0; reduct(); }
 
@@ -83,7 +91,9 @@ public:
 };
 
 int main() {
-	Fract a(0.105);
-	cout << a;
+	Fract a(-52.4,-3.012);
+	Fract b(-3.157);
+	Fract c = a * b;
+	cout << c;
 	return 0;
 }
