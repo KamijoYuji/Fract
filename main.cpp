@@ -1,13 +1,12 @@
 #include<iostream>
 #include<string>
+#include<cmath>
 using namespace std;
 
 class Fract {
 	double a;
 	double b;
 	double value = 0.0;
-
-	bool abs(double x) { return x < 0 ? -x : x; }
 public:
 	void reduct(double eps = 0.00001) {
 		if (!a and b) {
@@ -18,13 +17,13 @@ public:
 		if (!b)
 			return;
 
-		while (!(abs(int(a) - a) <= eps and abs(int(a) - a) <= eps)) {
+		while (!(abs(floor((a+0.5)) - a) < eps and abs(floor((b + 0.5)) - b) < eps)) {
 			a *= 10; b *= 10;
 		}
 
 		int c = a < b ? a : b;
 		while (c) {
-			if (!(int(a) % c) and !(int(b) % c))
+			if (!(int(float(a)) % c) and !(int(float(b)) % c))
 			{
 				a /= double(c);
 				b /= double(c);
@@ -82,3 +81,9 @@ public:
 			return c;
 		}
 };
+
+int main() {
+	Fract a(0.105);
+	cout << a;
+	return 0;
+}
